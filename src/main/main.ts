@@ -15,6 +15,8 @@ import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 
+const { PythonShell } = require('python-shell');
+
 class AppUpdater {
   constructor() {
     log.transports.file.level = 'info';
@@ -60,6 +62,24 @@ const createWindow = async () => {
   if (isDebug) {
     await installExtensions();
   }
+  /* need to look up ts types for Pythonshell */
+
+  const options = {
+    mode: 'text',
+    // python binary for venv needs to be pointed to using this option
+    pythonPath: path.join(__dirname, '../../', 'venv/Scripts/python.exe'),
+    pythonOptions: ['-u'], // get print results in real-time
+  };
+
+  PythonShell.run(
+    path.join(__dirname, '../../', 'server.py'),
+    options,
+    function (err: any, results: any) {
+      if (err) throw err;
+      // results is an array consisting of messages collected during execution
+      console.log('results: %j', results);
+    }
+  );
 
   const RESOURCES_PATH = app.isPackaged
     ? path.join(process.resourcesPath, 'assets')

@@ -2,6 +2,7 @@
 import json
 from flask import Flask
 from speech import *
+from flask_cors import CORS
 
 import os
 from flask import Flask, render_template, request, url_for, redirect
@@ -12,7 +13,7 @@ from sqlalchemy.sql import func
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 app = Flask(__name__)
-
+CORS(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] =\
     'sqlite:///' + os.path.join(basedir, 'database.db')
@@ -74,7 +75,7 @@ def create():
     return json.dumps({'sucess': "under construction"}), 200, {'ContentType': 'application/json'}
 
 
-@app.route("/delete/<command_id>")
+@app.route("/delete/<command_id>", methods=['POST'])
 def delete(command_id):
     command_id = command_id
     record = PathCommands.query.filter_by(id=command_id).first()
