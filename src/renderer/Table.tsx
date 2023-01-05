@@ -9,8 +9,8 @@ import ICommandProps from './ICommandProps';
 
 interface ICommand {
   id: number;
-  command: string;
-  path: string;
+  command?: string;
+  path?: string;
 }
 
 // eslint-disable-next-line import/prefer-default-export

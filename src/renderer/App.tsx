@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import Button from 'react-bootstrap/Button';
+import Button from '@mui/material/Button';
 import './App.css';
 import { Table } from './Table';
 import { Form } from './Form';
@@ -19,11 +19,7 @@ export default function App() {
   return (
     <div>
       <Form serverData={serverData} setServerData={setserverData} />
-      <Button
-        variant="outline-primary"
-        type="button"
-        onClick={() => OpenProgram()}
-      >
+      <Button variant="contained" onClick={() => OpenProgram()}>
         Speak
       </Button>
       <Table serverData={serverData} setServerData={setserverData} />

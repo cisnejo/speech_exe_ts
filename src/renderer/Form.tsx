@@ -3,7 +3,6 @@ import ICommandProps from './ICommandProps';
 
 // eslint-disable-next-line import/prefer-default-export
 export const Form: React.FC<ICommandProps> = ({
-  serverData,
   setServerData,
 }: ICommandProps) => {
   const [inputs, setInputs] = useState({ command_name: '', path: '' });
