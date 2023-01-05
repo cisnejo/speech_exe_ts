@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import './App.css';
 import { Table } from './Table';
-import Form from './Form';
+import { Form } from './Form';
 
 export default function App() {
   const [serverData, setserverData] = useState({ nodes: [] });
@@ -18,7 +18,7 @@ export default function App() {
 
   return (
     <div>
-      <Form />
+      <Form serverData={serverData} setServerData={setserverData} />
       <Button
         variant="outline-primary"
         type="button"

@@ -49,9 +49,8 @@ export const Table: React.FC<ICommandProps> = ({
 
   const DeleteItem = async (id: number) => {
     const response = await postData(`http://127.0.0.1:5000/delete/${id}`);
-    const data = await response;
-    console.log(data);
-
+    const parsedData = JSON.parse(response);
+    setServerData({ nodes: parsedData });
     return null;
   };
 

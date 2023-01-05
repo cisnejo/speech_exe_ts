@@ -82,9 +82,11 @@ def delete(command_id):
     if record:
         PathCommands.query.filter_by(id=command_id).delete()
         db.session.commit()
-        return json.dumps({"message": "deleted " + command_id})
+        commands = PathCommands.query.all()
+        serialized_list = json.dumps(commands, cls=AlchemyEncoder)
+        return json.dumps(serialized_list)
     else:
-        return json.dumps({"message": "No record found"})
+        return json.dumps({"error:no record selected"})
 
 
 @app.route("/records")
@@ -104,7 +106,9 @@ def handle_data():
         path=path)
     db.session.add(path_command)
     db.session.commit()
-    return json.dumps({"message": "data handled"})
+    commands = PathCommands.query.all()
+    serialized_list = json.dumps(commands, cls=AlchemyEncoder)
+    return json.dumps(serialized_list)
 
 
 if __name__ == "__main__":

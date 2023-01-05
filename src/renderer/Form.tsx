@@ -1,6 +1,11 @@
 import { useEffect, useState } from 'react';
+import ICommandProps from './ICommandProps';
 
-export default function Form() {
+// eslint-disable-next-line import/prefer-default-export
+export const Form: React.FC<ICommandProps> = ({
+  serverData,
+  setServerData,
+}: ICommandProps) => {
   const [inputs, setInputs] = useState({ command_name: '', path: '' });
   window.electron.ipcRenderer.once('ipc-example', (path: any) => {
     setInputs((prevState) => ({
@@ -39,7 +44,9 @@ export default function Form() {
       'http://127.0.0.1:5000/handle_data',
       inputs
     );
-    console.log(response);
+
+    const parsedData = JSON.parse(response);
+    setServerData({ nodes: parsedData });
   };
   return (
     <form method="post">
@@ -84,4 +91,4 @@ export default function Form() {
       </button>
     </form>
   );
-}
+};
