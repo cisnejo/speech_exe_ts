@@ -31,5 +31,4 @@ def speak(serialized_list):
             playsound('./sounds/320181__dland__hint.wav')
             os.startfile(app_path)
             return {"message": "opened " + command['command']}
-    # else:
-    #     print({"message": "incorrect activation"})
+    return ({"message": "||" + new_word + "|| is not a valid command"})
