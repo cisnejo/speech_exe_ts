@@ -1,6 +1,8 @@
+import Button from 'react-bootstrap/Button';
 import { useEffect, useReducer, useState } from 'react';
 import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
 import icon from '../../assets/icon.svg';
+
 import './App.css';
 import Table from './Table';
 import Form from './Form';
