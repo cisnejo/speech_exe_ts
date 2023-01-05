@@ -1,12 +1,6 @@
 interface ICommandProps {
-  serverData: {
-    nodes: never[];
-  };
-  setServerData: React.Dispatch<
-    React.SetStateAction<{
-      nodes: never[];
-    }>
-  >;
+  serverData: never[];
+  setServerData: React.Dispatch<React.SetStateAction<never[]>>;
 }
 
 export default ICommandProps;

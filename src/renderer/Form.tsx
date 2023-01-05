@@ -1,3 +1,7 @@
+import Button from '@mui/material/Button';
+import InputLabel from '@mui/material/InputLabel';
+import Input from '@mui/material/Input';
+import FormControl from '@mui/material/FormControl';
 import { useEffect, useState } from 'react';
 import ICommandProps from './ICommandProps';
 
@@ -45,13 +49,13 @@ export const Form: React.FC<ICommandProps> = ({
     );
 
     const parsedData = JSON.parse(response);
-    setServerData({ nodes: parsedData });
+    setServerData(parsedData);
   };
   return (
-    <form method="post">
-      <label htmlFor="command_name">
-        Command Name
-        <input
+    <>
+      <FormControl>
+        <InputLabel htmlFor="command_name">Command Name </InputLabel>
+        <Input
           type="text"
           name="command_name"
           value={inputs.command_name}
@@ -62,10 +66,10 @@ export const Form: React.FC<ICommandProps> = ({
             }));
           }}
         />
-      </label>
-
-      <label htmlFor="command_name">
-        <input
+      </FormControl>
+      <FormControl>
+        <InputLabel htmlFor="command_name">Path</InputLabel>
+        <Input
           type="text"
           name="path"
           value={inputs.path}
@@ -76,18 +80,18 @@ export const Form: React.FC<ICommandProps> = ({
             }));
           }}
         />
-      </label>
-      <button
-        type="button"
-        onClick={() => {
-          window.electron.ipcRenderer.sendMessage('ipc-example', []);
-        }}
-      >
-        button
-      </button>
-      <button type="submit" onClick={(e) => HandleSubmit(e)}>
+        <Button
+          type="button"
+          onClick={() => {
+            window.electron.ipcRenderer.sendMessage('ipc-example', []);
+          }}
+        >
+          ...
+        </Button>
+      </FormControl>
+      <Button type="submit" onClick={(e) => HandleSubmit(e)}>
         Add Command
-      </button>
-    </form>
+      </Button>
+    </>
   );
 };

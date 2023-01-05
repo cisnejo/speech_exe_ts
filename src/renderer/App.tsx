@@ -3,9 +3,10 @@ import Button from '@mui/material/Button';
 import './App.css';
 import { Table } from './Table';
 import { Form } from './Form';
+import { Grid } from './Grid';
 
 export default function App() {
-  const [serverData, setserverData] = useState({ nodes: [] });
+  const [serverData, setserverData] = useState([]);
 
   const OpenProgram = async () => {
     const response = await fetch('http://127.0.0.1:5000/');
@@ -19,10 +20,8 @@ export default function App() {
   return (
     <div>
       <Form serverData={serverData} setServerData={setserverData} />
-      <Button variant="contained" onClick={() => OpenProgram()}>
-        Speak
-      </Button>
-      <Table serverData={serverData} setServerData={setserverData} />
+      <Button onClick={() => OpenProgram()}>Speak</Button>
+      <Grid serverData={serverData} setServerData={setserverData} />
     </div>
   );
 }
