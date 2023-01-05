@@ -156,7 +156,6 @@ ipcMain.on('ipc-example', function (event) {
       properties: ['openFile'],
     })
     .then(function (files: any) {
-      console.log('hello');
       if (files) event.reply('ipc-example', files);
     })
     .catch((err) => console.log(err));
