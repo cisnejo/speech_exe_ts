@@ -1,41 +1,32 @@
 import { useEffect, useState } from 'react';
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import ICommandProps from './ICommandProps';
 
-interface ICommand {
-  id: number;
-  command: string;
-  path: string;
-}
+import ICommand from './ICommand';
 
 // eslint-disable-next-line import/prefer-default-export
 export const Grid: React.FC<ICommandProps> = ({
   serverData,
   setServerData,
 }: ICommandProps) => {
-  const [deletedRows, setDeletedRows] = useState<any[]>([]);
+  const [deletedRows, setDeletedRows] = useState([]);
 
-  const handleRowSelection = (e: any) => {
-    setDeletedRows([
-      ...deletedRows,
-      ...serverData.filter((r: any) => r.id === e.data.id),
-    ]);
+  const handleRowSelection = (ids: any) => {
+    setDeletedRows(ids);
   };
-  const handlePurge = () => {
-    setServerData(
-      serverData.filter(
-        (r: any) => deletedRows.filter((sr) => sr.id === r.id).length < 1
-      )
-    );
-  };
+
+  useEffect(() => {
+    console.log(deletedRows);
+  }, [deletedRows]);
+
   useEffect(() => {
     async function GetData() {
       const response = await fetch('http://127.0.0.1:5000/records');
       const data = await response.json();
       const parsedData = JSON.parse(data);
       setServerData(parsedData);
-      console.log(parsedData);
     }
     GetData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -58,6 +49,25 @@ export const Grid: React.FC<ICommandProps> = ({
     });
     return response.json(); // parses JSON response into native JavaScript objects
   }
+
+  const HandleDelete = async () => {
+    const idList = { id_list: deletedRows };
+    if (idList.id_list.length > 0) {
+      const response = await postData(`http://127.0.0.1:5000/deletes`, idList);
+
+      if (response.status !== '400') {
+        const commandList = await response.list;
+        const parsedData = await JSON.parse(commandList);
+        setServerData(parsedData);
+        return null;
+      }
+
+      console.log(response);
+      return null;
+    }
+    console.log('no data selected for deletion');
+    return null;
+  };
 
   const DeleteItem = async (id: number) => {
     const response = await postData(`http://127.0.0.1:5000/delete/${id}`);
@@ -90,9 +100,11 @@ export const Grid: React.FC<ICommandProps> = ({
         pageSize={5}
         rowsPerPageOptions={[5]}
         checkboxSelection
+        onSelectionModelChange={(itm) => handleRowSelection(itm)}
         disableSelectionOnClick
         experimentalFeatures={{ newEditingApi: true }}
       />
+      <Button onClick={HandleDelete}>Delete</Button>
     </Box>
   );
 };

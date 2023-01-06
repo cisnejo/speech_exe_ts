@@ -10,15 +10,15 @@ export const Form: React.FC<ICommandProps> = ({
   setServerData,
 }: ICommandProps) => {
   const [inputs, setInputs] = useState({ command_name: '', path: '' });
-  window.electron.ipcRenderer.once('ipc-example', (path: any) => {
-    setInputs((prevState) => ({
-      ...prevState,
-      path: path.filePaths[0],
-    }));
 
-    // eslint-disable-next-line no-console
-    // console.log(arg);
-  });
+  useEffect(() => {
+    window.electron.ipcRenderer.on('ipc-example', (path: any) => {
+      setInputs((prevState) => ({
+        ...prevState,
+        path: path.filePaths[0],
+      }));
+    });
+  }, []);
 
   const HandleSubmit = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>

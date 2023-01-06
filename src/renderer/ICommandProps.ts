@@ -1,6 +1,8 @@
+import ICommand from './ICommand';
+
 interface ICommandProps {
-  serverData: never[];
-  setServerData: React.Dispatch<React.SetStateAction<never[]>>;
+  serverData: ICommand[];
+  setServerData: React.Dispatch<React.SetStateAction<ICommand[]>>;
 }
 
 export default ICommandProps;

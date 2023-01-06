@@ -1,6 +1,6 @@
 
 import json
-from flask import Flask
+from flask import Flask, Response
 from speech import *
 from flask_cors import CORS
 
@@ -75,18 +75,37 @@ def create():
     return json.dumps({'sucess': "under construction"}), 200, {'ContentType': 'application/json'}
 
 
-@app.route("/delete/<command_id>", methods=['POST'])
-def delete(command_id):
-    command_id = command_id
-    record = PathCommands.query.filter_by(id=command_id).first()
-    if record:
-        PathCommands.query.filter_by(id=command_id).delete()
-        db.session.commit()
-        commands = PathCommands.query.all()
-        serialized_list = json.dumps(commands, cls=AlchemyEncoder)
-        return json.dumps(serialized_list)
-    else:
-        return json.dumps({"error:no record selected"})
+# @app.route("/delete/<command_id>", methods=['POST'])
+# def delete(command_id):
+#     command_id = command_id
+#     record = PathCommands.query.filter_by(id=command_id).first()
+#     if record:
+#         PathCommands.query.filter_by(id=command_id).delete()
+#         db.session.commit()
+#         commands = PathCommands.query.all()
+#         serialized_list = json.dumps(commands, cls=AlchemyEncoder)
+#         return json.dumps(serialized_list)
+#     else:
+#         return json.dumps({"error:no record selected"})
+
+
+@app.route("/deletes", methods=['POST'])
+def deletes():
+    data = request.json
+    id_list = data["id_list"]
+
+    if (len(id_list) < 1):
+        return json.dumps({'error': "no data selected", 'status': "400"}), 400, {'ContentType': 'application/json'}
+
+    for id in id_list:
+        record = PathCommands.query.filter_by(id=id).first()
+        if record:
+            PathCommands.query.filter_by(id=id).delete()
+            db.session.commit()
+
+    commands = PathCommands.query.all()
+    serialized_list = json.dumps(commands, cls=AlchemyEncoder)
+    return json.dumps({"list": serialized_list, 'status': "200"}), 200, {'ContentType': 'application/json'}
 
 
 @app.route("/records")
