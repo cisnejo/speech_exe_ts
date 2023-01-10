@@ -87,17 +87,17 @@ export const Grid: React.FC<ICommandProps> = ({
     {
       field: 'path',
       headerName: 'Path',
-      width: 150,
+      flex: 1,
       editable: true,
     },
   ];
 
   return (
-    <Box sx={{ height: 400, width: '100%' }}>
+    <Box sx={{ height: 500, width: '100%' }}>
       <DataGrid
         rows={serverData}
         columns={columns}
-        pageSize={5}
+        pageSize={8}
         rowsPerPageOptions={[5]}
         checkboxSelection
         onSelectionModelChange={(itm) => handleRowSelection(itm)}

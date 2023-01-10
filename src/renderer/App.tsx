@@ -11,7 +11,7 @@ export default function App() {
   const [serverData, setserverData] = useState<ICommand[]>([]);
 
   const OpenProgram = async () => {
-    const response = await fetch('http://127.0.0.1:5000/');
+    const response = await fetch('http://127.0.0.1:5000/open');
     const data = await response.json();
     if (!data) {
       return console.log('command not listed');
@@ -21,8 +21,8 @@ export default function App() {
 
   return (
     <div>
-      <Form serverData={serverData} setServerData={setserverData} />
       <Button onClick={() => OpenProgram()}>Speak</Button>
+      <Form serverData={serverData} setServerData={setserverData} />
       <Grid serverData={serverData} setServerData={setserverData} />
     </div>
   );

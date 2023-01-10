@@ -53,12 +53,12 @@ class AlchemyEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self, obj)
 
 
-@app.route("/")
+@app.route("/open")
 def hello():
     commands = PathCommands.query.all()
     serialized_list = json.dumps(commands, cls=AlchemyEncoder)
     command_confirmation = speak(serialized_list)
-    return json.dumps(command_confirmation)
+    return json.dumps({"message": "working"})
 
 
 @app.route("/create")

@@ -4,6 +4,10 @@ from playsound import playsound
 import json
 import subprocess
 import os
+import sys
+
+
+# determine if application is a script file or frozen exe
 
 
 def SpeechToText():
@@ -19,10 +23,14 @@ def SpeechToText():
 
 
 def speak(serialized_list):
-
+    if getattr(sys, 'frozen', False):
+        application_path = os.path.join(os.path.dirname(
+            sys.executable), 'sounds')
+    elif __file__:
+        application_path = os.path.join(os.path.dirname(__file__), 'sounds')
     serialized_list = json.loads(serialized_list)
-    # if (SpeechToText() == "computer"):
-    playsound('./sounds/start-13691.mp3')
+
+    playsound(os.path.join(application_path, 'start-13691.mp3'))
     speechText = SpeechToText()
     if (not speechText):
         return ({"error": "speech not recognized"})
@@ -30,7 +38,8 @@ def speak(serialized_list):
     for command in serialized_list:
         if (commandText == "open " + command["command"].lower()):
             app_path = command["path"]
-            playsound('./sounds/320181__dland__hint.wav')
+            playsound(os.path.join(application_path,
+                      '320181__dland__hint.wav'))
             os.startfile(app_path)
             return {"message": "opened " + command['command']}
     return ({"message": "||" + commandText + "|| is not a valid command"})

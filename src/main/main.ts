@@ -9,6 +9,7 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
+import child_process from 'child_process';
 import { app, BrowserWindow, shell, ipcMain, dialog } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
@@ -35,7 +36,7 @@ if (process.env.NODE_ENV === 'production') {
 const isDebug =
   process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true';
 
-if (isDebug) {
+if (true) {
   require('electron-debug')();
 }
 
@@ -57,23 +58,24 @@ const createWindow = async () => {
     await installExtensions();
   }
   /* need to look up ts types for Pythonshell */
+  if (process.env.NODE_ENV === 'development') {
+    const options = {
+      mode: 'text',
+      // python binary for venv needs to be pointed to using this option
+      pythonPath: path.join(__dirname, '../../', 'venv/Scripts/python.exe'),
+      pythonOptions: ['-u'], // get print results in real-time
+    };
 
-  const options = {
-    mode: 'text',
-    // python binary for venv needs to be pointed to using this option
-    pythonPath: path.join(__dirname, '../../', 'venv/Scripts/python.exe'),
-    pythonOptions: ['-u'], // get print results in real-time
-  };
-
-  PythonShell.run(
-    path.join(__dirname, '../../', 'server.py'),
-    options,
-    function (err: any, results: any) {
-      if (err) throw err;
-      // results is an array consisting of messages collected during execution
-      console.log('results: %j', results);
-    }
-  );
+    PythonShell.run(
+      path.join(__dirname, '../../', 'server.py'),
+      options,
+      function (err: any, results: any) {
+        if (err) throw err;
+        // results is an array consisting of messages collected during execution
+        console.log('results: %j', results);
+      }
+    );
+  }
 
   const RESOURCES_PATH = app.isPackaged
     ? path.join(process.resourcesPath, 'assets')
@@ -83,6 +85,9 @@ const createWindow = async () => {
     return path.join(RESOURCES_PATH, ...paths);
   };
 
+  if (process.env.NODE_ENV === 'production') {
+    child_process.spawn(path.join(RESOURCES_PATH, 'server.exe'));
+  }
   mainWindow = new BrowserWindow({
     show: false,
     width: 1024,
