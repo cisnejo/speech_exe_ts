@@ -3,7 +3,7 @@ import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import ICommandProps from './ICommandProps';
-
+import useFetch from './useFetch';
 import ICommand from './ICommand';
 
 // eslint-disable-next-line import/prefer-default-export
@@ -12,27 +12,17 @@ export const Grid: React.FC<ICommandProps> = ({
   setServerData,
 }: ICommandProps) => {
   const [deletedRows, setDeletedRows] = useState([]);
-
+  const { data, isPending, error } = useFetch('http://127.0.0.1:5000/records');
   const handleRowSelection = (ids: any) => {
     setDeletedRows(ids);
   };
 
   useEffect(() => {
-    console.log(deletedRows);
-  }, [deletedRows]);
-
-  useEffect(() => {
-    async function GetData() {
-      const response = await fetch('http://127.0.0.1:5000/records');
-      const data = await response.json();
-      const parsedData = JSON.parse(data);
-      setServerData(parsedData);
-    }
-    GetData();
+    setServerData(data);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isPending]);
 
-  async function postData(url = '', data = {}) {
+  async function postData(url = '', bodyData = {}) {
     // Default options are marked with *
     const response = await fetch(url, {
       method: 'POST', // *GET, POST, PUT, DELETE, etc.
@@ -45,7 +35,7 @@ export const Grid: React.FC<ICommandProps> = ({
       },
       redirect: 'follow', // manual, *follow, error
       referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-      body: JSON.stringify(data), // body data type must match "Content-Type" header
+      body: JSON.stringify(bodyData), // body data type must match "Content-Type" header
     });
     return response.json(); // parses JSON response into native JavaScript objects
   }

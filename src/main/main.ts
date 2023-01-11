@@ -139,6 +139,17 @@ app.on('window-all-closed', () => {
   // Respect the OSX convention of having the application in memory even
   // after all windows have been closed
   if (process.platform !== 'darwin') {
+    child_process.exec(
+      'taskkill /f /t /im server.exe',
+      (err, stdout, stderr) => {
+        if (err) {
+          console.log(err);
+          return;
+        }
+        console.log(`stdout: ${stdout}`);
+        console.log(`stderr: ${stderr}`);
+      }
+    );
     app.quit();
   }
 });

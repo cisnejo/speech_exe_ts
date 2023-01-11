@@ -8,7 +8,7 @@ a = Analysis(
     ['server.py'],
     pathex=[],
     binaries=[],
-    datas=[('database.db', '.')],
+    datas=[],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
