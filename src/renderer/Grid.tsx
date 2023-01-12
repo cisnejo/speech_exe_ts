@@ -51,18 +51,10 @@ export const Grid: React.FC<ICommandProps> = ({
         setServerData(parsedData);
         return null;
       }
-
       console.log(response);
       return null;
     }
     console.log('no data selected for deletion');
-    return null;
-  };
-
-  const DeleteItem = async (id: number) => {
-    const response = await postData(`http://127.0.0.1:5000/delete/${id}`);
-    const parsedData = JSON.parse(response);
-    setServerData(parsedData);
     return null;
   };
 

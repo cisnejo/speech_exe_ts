@@ -117,7 +117,7 @@ def deletes():
     return json.dumps({"list": serialized_list, 'status': "200"}), 200, {'ContentType': 'application/json'}
 
 
-@app.route("/records")
+@app.route("/records", methods =['GET'])
 def get_records():
     commands = PathCommands.query.all()
     serialized_list = json.dumps(commands, cls=AlchemyEncoder)
