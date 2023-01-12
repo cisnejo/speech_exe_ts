@@ -19,11 +19,9 @@ Activate the virtual environment:
   Linux + MacOS: $ source venv/bin/activate
   ```
 Install python dependancies 
-```bash (venv) python -m pip install -r requirements.txt ```
-
-
-
-
+```bash 
+(venv) python -m pip install -r requirements.txt 
+```
 **Having issues installing Electron? See [debugging guide](https://github.com/electron-react-boilerplate/electron-react-boilerplate/issues/400)**
 
 ## Starting Development
