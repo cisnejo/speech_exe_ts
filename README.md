@@ -38,9 +38,10 @@ To package apps for the local platform:
 
 Bundle python into an exe using pyinstaller
   With your virtual environment active:
-  ```bash
-    (venv)  pyinstaller -F  server.py
-    ```
+  
+```bash 
+(venv) pyinstaller -m server.py 
+```
 
 Copy the following files into the assets folder
   - All sound files in "sounds" folder
