@@ -11,6 +11,7 @@ import Button from '@mui/material/Button';
 import ICommandProps from './ICommandProps';
 import useFetch from './useFetch';
 import ICommand from './ICommand';
+import usePost from './usePost';
 
 // eslint-disable-next-line import/prefer-default-export
 export const Grid: React.FC<ICommandProps> = ({
@@ -19,50 +20,30 @@ export const Grid: React.FC<ICommandProps> = ({
 }: ICommandProps) => {
   const [deletedRows, setDeletedRows] = useState([]);
   const [open, setOpen] = useState(false);
-  const { data, isPending, error } = useFetch('http://127.0.0.1:5000/records');
+  const { data: getData, isPending } = useFetch(
+    'http://127.0.0.1:5000/records'
+  );
+  const { postData } = usePost('http://127.0.0.1:5000/deletes', {
+    id_list: deletedRows,
+  });
   const handleRowSelection = (ids: any) => {
     setDeletedRows(ids);
   };
 
   useEffect(() => {
-    setServerData(data);
+    setServerData(getData);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isPending]);
-
-  async function postData(url = '', bodyData = {}) {
-    // Default options are marked with *
-    const response = await fetch(url, {
-      method: 'POST', // *GET, POST, PUT, DELETE, etc.
-      mode: 'cors', // no-cors, *cors, same-origin
-      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-      credentials: 'same-origin', // include, *same-origin, omit
-      headers: {
-        'Content-Type': 'application/json',
-        // 'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      redirect: 'follow', // manual, *follow, error
-      referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-      body: JSON.stringify(bodyData), // body data type must match "Content-Type" header
-    });
-    return response.json(); // parses JSON response into native JavaScript objects
-  }
 
   const HandleDelete = async () => {
     const idList = { id_list: deletedRows };
     if (idList.id_list.length > 0) {
-      const response = await postData(`http://127.0.0.1:5000/deletes`, idList);
-
-      if (response.status !== '400') {
-        const commandList = await response.list;
-        const parsedData = await JSON.parse(commandList);
-        setServerData(parsedData);
-        setOpen(true);
-        return null;
-      }
-      console.log(response);
-      return null;
+      const commandList = await postData(idList);
+      const parsedData = await JSON.parse(commandList.list);
+      setServerData(parsedData);
+      setOpen(true);
     }
-    console.log('no data selected for deletion');
+
     return null;
   };
 
