@@ -11,14 +11,19 @@ cd your-project-name
 npm install
 python -m pip install --user virtualenv
 virtualenv venv
+```
 
 Activate the virtual environment:
+```bash
   Windows: PS> venv\Scripts\activate
   Linux + MacOS: $ source venv/bin/activate
-Install python dependancies : (venv) python -m pip install -r requirements.txt
+  ```
+Install python dependancies 
+```bash
+  (venv) python -m pip install -r requirements.txt
+  ```
 
 
-```
 
 **Having issues installing Electron? See our [debugging guide](https://github.com/electron-react-boilerplate/electron-react-boilerplate/issues/400)**
 
