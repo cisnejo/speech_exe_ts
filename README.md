@@ -25,7 +25,7 @@ Install python dependancies
 
 
 
-**Having issues installing Electron? See our [debugging guide](https://github.com/electron-react-boilerplate/electron-react-boilerplate/issues/400)**
+**Having issues installing Electron? See [debugging guide](https://github.com/electron-react-boilerplate/electron-react-boilerplate/issues/400)**
 
 ## Starting Development
 
@@ -39,19 +39,20 @@ npm start
 
 To package apps for the local platform:
 
-```bash
 Bundle python into an exe using pyinstaller
   With your virtual environment active:
+  ```bash
     (venv)  pyinstaller -F  server.py
+    ```
 
 Copy the following files into the assets folder
   - All sound files in "sounds" folder
   - In the "dist" folder, move "server.exe" to "assets" folder in root directory
   
+ ```bash
 npm run package
-
-Run "ElectronReactSetup.exe", found in "release\build" 
 ```
+Run "ElectronReactSetup.exe", found in "release\build" 
 
 ## Electron-BoilerPlate Docs
 
