@@ -9,6 +9,9 @@ Clone the repo and install dependencies:
 git clone  https://github.com/cisnejo/speech_exe_ts.git your-project-name
 cd your-project-name
 npm install
+```
+Install virtualenv and create a new environment
+```bash
 python -m pip install --user virtualenv
 virtualenv venv
 ```
