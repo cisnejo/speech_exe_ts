@@ -49,7 +49,7 @@ Copy the following files into the assets folder
   - All sound files in "sounds" folder
   - In the "dist" folder, move "server.exe" to "assets" folder in root directory
   
- ```bash
+```bash
 npm run package
 ```
 Run "ElectronReactSetup.exe", found in "release\build" 
