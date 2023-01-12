@@ -1,6 +1,11 @@
 import { useEffect, useState } from 'react';
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
-import { CircularProgress, LinearProgress } from '@mui/material';
+import {
+  Alert,
+  CircularProgress,
+  LinearProgress,
+  Snackbar,
+} from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import ICommandProps from './ICommandProps';
@@ -13,6 +18,7 @@ export const Grid: React.FC<ICommandProps> = ({
   setServerData,
 }: ICommandProps) => {
   const [deletedRows, setDeletedRows] = useState([]);
+  const [open, setOpen] = useState(false);
   const { data, isPending, error } = useFetch('http://127.0.0.1:5000/records');
   const handleRowSelection = (ids: any) => {
     setDeletedRows(ids);
@@ -50,6 +56,7 @@ export const Grid: React.FC<ICommandProps> = ({
         const commandList = await response.list;
         const parsedData = await JSON.parse(commandList);
         setServerData(parsedData);
+        setOpen(true);
         return null;
       }
       console.log(response);
@@ -57,6 +64,17 @@ export const Grid: React.FC<ICommandProps> = ({
     }
     console.log('no data selected for deletion');
     return null;
+  };
+
+  const handleClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
   };
 
   const columns: GridColDef[] = [
@@ -92,6 +110,11 @@ export const Grid: React.FC<ICommandProps> = ({
         }}
       />
       <Button onClick={HandleDelete}>Delete</Button>
+      <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+          Item(s) deleted successfully!
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

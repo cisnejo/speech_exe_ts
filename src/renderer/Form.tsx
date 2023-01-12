@@ -9,6 +9,8 @@ import {
   Grid,
   Link,
   TextField,
+  Snackbar,
+  Alert,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import ICommandProps from './ICommandProps';
@@ -18,7 +20,7 @@ export const Form: React.FC<ICommandProps> = ({
   setServerData,
 }: ICommandProps) => {
   const [inputs, setInputs] = useState({ command_name: '', path: '' });
-
+  const [open, setOpen] = useState(false);
   useEffect(() => {
     window.electron.ipcRenderer.on('ipc-example', (path: any) => {
       setInputs((prevState) => ({
@@ -54,6 +56,18 @@ export const Form: React.FC<ICommandProps> = ({
     );
     const parsedData = JSON.parse(response);
     setServerData(parsedData);
+    setOpen(true);
+  };
+
+  const handleClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
   };
 
   return (
@@ -107,6 +121,15 @@ export const Form: React.FC<ICommandProps> = ({
         <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
           Add Command
         </Button>
+        <Snackbar open={open} autoHideDuration={700} onClose={handleClose}>
+          <Alert
+            onClose={handleClose}
+            severity="success"
+            sx={{ width: '100%' }}
+          >
+            Item added!
+          </Alert>
+        </Snackbar>
       </Box>
     </>
   );
