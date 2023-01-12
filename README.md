@@ -19,9 +19,8 @@ Activate the virtual environment:
   Linux + MacOS: $ source venv/bin/activate
   ```
 Install python dependancies 
-```bash
-  (venv) python -m pip install -r requirements.txt
-  ```
+```bash (venv) python -m pip install -r requirements.txt ```
+
 
 
 
@@ -49,9 +48,9 @@ Copy the following files into the assets folder
   - All sound files in "sounds" folder
   - In the "dist" folder, move "server.exe" to "assets" folder in root directory
   
-```bash
+  ```bash
 npm run package
-```
+  ```
 Run "ElectronReactSetup.exe", found in "release\build" 
 
 ## Electron-BoilerPlate Docs
