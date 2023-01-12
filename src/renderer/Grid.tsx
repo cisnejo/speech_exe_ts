@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
+import { CircularProgress, LinearProgress } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import ICommandProps from './ICommandProps';
@@ -85,6 +86,10 @@ export const Grid: React.FC<ICommandProps> = ({
         onSelectionModelChange={(itm) => handleRowSelection(itm)}
         disableSelectionOnClick
         experimentalFeatures={{ newEditingApi: true }}
+        loading={isPending}
+        components={{
+          LoadingOverlay: LinearProgress,
+        }}
       />
       <Button onClick={HandleDelete}>Delete</Button>
     </Box>
