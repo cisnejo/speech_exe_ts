@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import {
   Alert,
   CircularProgress,
@@ -9,10 +9,13 @@ import {
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import ICommandProps from './ICommandProps';
-import useFetch from './useFetch';
 import ICommand from './ICommand';
+import useFetch from './useFetch';
 import usePost from './usePost';
 
+interface CommandList {
+  list: string;
+}
 // eslint-disable-next-line import/prefer-default-export
 export const Grid: React.FC<ICommandProps> = ({
   serverData,
@@ -38,7 +41,7 @@ export const Grid: React.FC<ICommandProps> = ({
   const HandleDelete = async () => {
     const idList = { id_list: deletedRows };
     if (idList.id_list.length > 0) {
-      const commandList = await postData(idList);
+      const commandList = (await postData(idList)) as unknown as CommandList;
       const parsedData = await JSON.parse(commandList.list);
       setServerData(parsedData);
       setOpen(true);
